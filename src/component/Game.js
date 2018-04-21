@@ -3,9 +3,15 @@ import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import RandomNumber from './RandomNumber'
 export default class Game extends React.Component {
-    static propTypes={
+static propTypes={
         randomNumberCount:PropTypes.string.isRequired,
     };
+state={
+    selectedNumbers:[0,4],
+};
+isNumberSelected=(numberIndex)=>{
+    return this.state.selectedNumbers.indexOf(numberIndex)>=0;
+}
 randomNumbers=Array.from({length:this.props.randomNumberCount})
 .map(()=>1+Math.floor(10*Math.random()));
 target=this.randomNumbers.slice(0,this.props.randomNumberCount-2)
@@ -17,8 +23,11 @@ target=this.randomNumbers.slice(0,this.props.randomNumberCount-2)
             <Text style={styles.target}>{this.target}</Text>
             <View style={styles.randomContainer}>
                 {this.randomNumbers.map((randomNumber,index)=>
-               <RandomNumber key={index} number={randomNumber}/>
-            //    <Text style={styles.random} key={index}>{randomNumber}</Text>
+               <RandomNumber
+                key={index}
+                number={randomNumber}
+                isSelected={this.isNumberSelected(index)}
+                />
                 )}
             </View>
       </View>
